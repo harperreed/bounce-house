@@ -15,7 +15,7 @@ processes = []
   auto_rollback = true
 
 [metrics]
-  port = 9091 # default for most prometheus clients
+  port = 80 # default for most prometheus clients
   path = "/metrics" # default for most prometheus clients
 
 [[services]]
