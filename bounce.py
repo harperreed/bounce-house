@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, render_template
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 import validators
 from prometheus_client import make_wsgi_app, Counter
+import tldextract
 
 domains_stat_name = "domain_visit"
 domains_stat_description = "visits to domains"
@@ -19,6 +20,9 @@ def bounce():
   domain = request.headers['Host']
   redirect_url = "http://harperrules.com/domain/?domain=" + domain
   if validators.domain(domain):
+    extracted = tldextract.extract(domain)
+    domain = extracted.domain + "." + extracted.suffix
+
     stat_name = "domain_"+domain.replace(".","_")
     stat_description = "visits to domain: " + domain
     domain_count = Counter(stat_name, stat_description)
