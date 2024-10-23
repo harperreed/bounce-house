@@ -23,13 +23,14 @@ app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
     '/metrics': make_wsgi_app()
 })
 
+
 @app.route('/')
 def bounce():
     # Extract the domain from the Host header
     domain = request.headers.get('Host', 'unknown')
     logging.info(f"Received request for domain: {domain}")
 
-        # Default redirect URL in case of invalid domain
+    # Default redirect URL in case of invalid domain
     redirect_url = bounce_url
     if validators.domain(domain):
         extracted = tldextract.extract(domain)
