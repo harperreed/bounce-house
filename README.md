@@ -11,6 +11,8 @@ This repository contains the following files:
 - `bounce.py`: The main Python script that handles the domain bouncing logic. 🐍
 - `fly.toml`: Configuration file for deploying the application on Fly.io. ☁️
 - `requirements.txt`: Lists the Python dependencies required to run the application. 📜
+- `config.py`: Contains configuration variables for the application. ⚙️
+- `test_bounce.py`: Contains unit tests for the application. 🧪
 
 ## How It Works 🤔
 
@@ -21,6 +23,12 @@ When a user visits a domain that points to this application, the following steps
 3. The application increments a Prometheus counter for the specific domain. 📈
 4. The user is redirected to `http://harperrules.com/domain/?domain=<extracted_domain>`. 🔀
 5. If the domain is invalid, the user is redirected to the root URL `http://harperrules.com/`. 🚫
+6. If the 'Host' header is missing, the user is redirected to the root URL `http://harperrules.com/` with a default domain value of 'unknown'. 🚫
+7. The extracted domain is converted to lowercase before further processing. 🔡
+8. Proper error handling for HTTP requests is implemented. 🛠️
+9. Detailed logging messages with appropriate log levels are added. 📝
+10. Rate limiting is implemented to prevent abuse. 🚦
+11. Input sanitization for the domain parameter is added. 🧼
 
 ## Deployment 🚀
 
