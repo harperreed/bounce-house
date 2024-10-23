@@ -9,9 +9,11 @@ def client():
 
 
 def test_valid_domain_redirection(client):
-    response = client.get('/', headers={'Host': 'x.com'})
+    response = client.get('/', headers={'Host': 'example.com'})
     assert response.status_code == 301
-    assert response.headers['Location'] == 'http://harperrules.com/domain/?domain=x.com'
+    assert response.headers['Location'] == (
+        'http://harperrules.com/domain/?domain=example.com'
+    )
 
 
 def test_invalid_domain_redirection(client):
