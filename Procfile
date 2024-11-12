@@ -1,1 +1,0 @@
-web: gunicorn bounce:app

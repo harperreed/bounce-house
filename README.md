@@ -2,44 +2,68 @@
 
 Welcome to the repository for Harper's Bounce House, a simple domain bouncer that redirects visitors to [harperrules.com](http://harperrules.com)! 🚀
 
-## Repository Overview 📂
+## Summary of Project 📜
 
-This repository contains the following files:
+Harper's Bounce House is designed to handle incoming requests to various domains and redirect users accordingly. It enhances user experience by directing valid domains to specific URL parameters and managing invalid requests gracefully. The application also provides metrics via Prometheus to track the number of visits identified by domain. 
 
-- `Procfile`: Specifies the command to run the application using Gunicorn.
-- `README.md`: You're reading it right now! 📖
-- `bounce.py`: The main Python script that handles the domain bouncing logic. 🐍
-- `fly.toml`: Configuration file for deploying the application on Fly.io. ☁️
-- `requirements.txt`: Lists the Python dependencies required to run the application. 📜
-- `config.py`: Contains configuration variables for the application. ⚙️
-- `test_bounce.py`: Contains unit tests for the application. 🧪
+Key features of the project include:
+- Validates incoming domain requests.
+- Redirects users based on their domain.
+- Tracks visits with Prometheus metrics.
 
-## How It Works 🤔
+## How to Use 🔧
 
-When a user visits a domain that points to this application, the following steps occur:
+To set up and run Harper's Bounce House locally, follow these steps:
 
-1. The application extracts the domain from the `Host` header of the incoming request. 🔍
-2. If the domain is valid, it extracts the domain name and suffix using `tldextract`. 🧐
-3. The application increments a Prometheus counter for the specific domain. 📈
-4. The user is redirected to `http://harperrules.com/domain/?domain=<extracted_domain>`. 🔀
-5. If the domain is invalid, the user is redirected to the root URL `http://harperrules.com/`. 🚫
-6. If the 'Host' header is missing, the user is redirected to the root URL `http://harperrules.com/` with a default domain value of 'unknown'. 🚫
-7. The extracted domain is converted to lowercase before further processing. 🔡
-8. Proper error handling for HTTP requests is implemented. 🛠️
-9. Detailed logging messages with appropriate log levels are added. 📝
-10. Rate limiting is implemented to prevent abuse. 🚦
-11. Input sanitization for the domain parameter is added. 🧼
+1. **Clone the Repository**:
+    ```bash
+    git clone https://github.com/harperreed/bounce-house.git
+    cd bounce-house
+    ```
 
-## Deployment 🚀
+2. **Create Virtual Environment (optional)**:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
 
-The application is deployed using [Fly.io](https://fly.io/). The `fly.toml` file contains the necessary configuration for the deployment.
+3. **Install Dependencies**:
+    Make sure you have [Python](https://www.python.org/downloads/) 3.13 or later installed. Then, run:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-## Monitoring 📊
+4. **Run the Application**:
+    ```bash
+    gunicorn bounce:app --bind 0.0.0.0:8080
+    ```
 
-The application exposes Prometheus metrics at the `/metrics` endpoint. The `domain_counter` metric tracks the number of visits to each domain.
+5. **Access the Application**:
+    Open your browser and navigate to `http://localhost:8080`.
 
-## Contributing 🤝
+6. **Deploy to Fly.io**:
+    Use the `fly.toml` file to deploy the application on [Fly.io](https://fly.io/). Make sure to set up your Fly account and follow their deployment procedures.
 
-If you'd like to contribute to this project, please feel free to open an issue or submit a pull request. Let's bounce together! 🙌
+## Tech Info 💻
+
+### Technologies Used
+- **Flask**: A micro web framework in Python that powers the application.
+- **Gunicorn**: A Python WSGI HTTP Server for UNIX to serve the application.
+- **Prometheus**: A metrics server to monitor application performance.
+- **Validators**: Library to validate domain names.
+- **TLD Extract**: Extracts the top-level domain from the incoming requests.
+
+### Components
+- `bounce.py`: Contains the core logic for domain bouncing and redirection.
+- `Dockerfile`: Describes how to build a Docker image for the app.
+- `fly.toml`: Configuration for deployment on Fly.io.
+- `test_bounce.py`: Contains unit tests to ensure functionality.
+- Workflow files in `.github/workflows/`: Includes CI/CD configuration for testing and linting.
+
+### Metrics & Monitoring 📊
+The application exposes Prometheus metrics at the `/metrics` endpoint, allowing for monitoring the domains being accessed and their respective visit counts.
+
+## Contribution 🤝 
+If you'd like to contribute to the Bounce House, feel free to open issues or submit pull requests. We welcome all contributions to make this project better! Let's bounce together! 🙌
 
 Built with ❤️ by [@harperreed](https://github.com/harperreed)
