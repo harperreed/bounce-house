@@ -10,6 +10,8 @@ Key features of the project include:
 - Validates incoming domain requests.
 - Redirects users based on their domain.
 - Tracks visits with Prometheus metrics.
+- Implements rate limiting to prevent abuse.
+- Sanitizes input for the domain parameter to enhance security.
 
 ## How to Use 🔧
 
@@ -55,6 +57,7 @@ To set up and run Harper's Bounce House locally, follow these steps:
 
 ### Components
 - `bounce.py`: Contains the core logic for domain bouncing and redirection.
+- `config.py`: Contains configuration variables for the application.
 - `Dockerfile`: Describes how to build a Docker image for the app.
 - `fly.toml`: Configuration for deployment on Fly.io.
 - `test_bounce.py`: Contains unit tests to ensure functionality.
