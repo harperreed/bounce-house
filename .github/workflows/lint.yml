@@ -1,4 +1,4 @@
-name: Lint
+name: Lint with Ruff
 
 on:
     push:
@@ -21,6 +21,6 @@ jobs:
               with:
                   version: "latest"
 
-            - name: Run flake8
+            - name: Run Ruff
               run: |
                   uvx ruff check
