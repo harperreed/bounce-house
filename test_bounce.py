@@ -20,3 +20,15 @@ def test_invalid_domain_redirection(client):
     response = client.get('/', headers={'Host': 'invalid_domain'})
     assert response.status_code == 301
     assert response.headers['Location'] == 'http://harperrules.com/'
+
+
+def test_missing_host_header(client):
+    response = client.get('/')
+    assert response.status_code == 301
+    assert response.headers['Location'] == 'http://harperrules.com/'
+
+
+def test_invalid_domain_format(client):
+    response = client.get('/', headers={'Host': 'invalid_domain_format'})
+    assert response.status_code == 301
+    assert response.headers['Location'] == 'http://harperrules.com/'

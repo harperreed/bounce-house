@@ -1,31 +1,45 @@
 # fly.toml file generated for bounce-house on 2023-02-11T20:32:44-06:00
 
+# Application name
 app = "bounce-house"
+
+# Signal to use for killing the application
 kill_signal = "SIGINT"
+
+# Timeout for killing the application
 kill_timeout = 5
+
+# List of processes
 processes = []
 
+# Environment variables
 [env]
 PORT = "8080"
 
+# Experimental features
 [experimental]
 auto_rollback = true
 
+# Prometheus metrics configuration
 [metrics]
 port = 80         # default for most prometheus clients
 path = "/metrics" # default for most prometheus clients
 
+# Services configuration
 [[services]]
 http_checks = []
 internal_port = 8080
 processes = ["app"]
 protocol = "tcp"
 script_checks = []
+
+# Concurrency settings
 [services.concurrency]
 hard_limit = 25
 soft_limit = 20
 type = "connections"
 
+# Ports configuration
 [[services.ports]]
 force_https = true
 handlers = ["http"]
@@ -35,6 +49,7 @@ port = 80
 handlers = ["http"]
 port = 80
 
+# TCP checks configuration
 [[services.tcp_checks]]
 grace_period = "1s"
 interval = "15s"
