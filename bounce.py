@@ -51,6 +51,11 @@ def is_rate_limited(ip: str) -> bool:
     request_times = [t for t in request_times if current_time - t < rate_limit_period]
     rate_limit_store[ip] = request_times
 
+    # Remove IP from store if no recent requests
+    if not request_times:
+        del rate_limit_store[ip]
+        return False
+
     if len(request_times) >= rate_limit_requests:
         return True
 
