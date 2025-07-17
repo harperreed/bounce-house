@@ -3,13 +3,55 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
 jobs:
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
+    # Only deploy on main branch pushes and open PRs
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      
+      # Deploy to production for main branch
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        run: flyctl deploy --remote-only --app bounce-house
+      
+      # Deploy to preview for pull requests
+      - name: Deploy PR preview
+        if: github.event_name == 'pull_request'
+        run: |
+          # Create a unique app name for this PR
+          PR_APP_NAME="bounce-house-pr-${{ github.event.number }}"
+          
+          # Deploy to a preview app
+          flyctl deploy --remote-only --app $PR_APP_NAME --config fly.toml
+          
+          # Get the app URL
+          APP_URL=$(flyctl info --app $PR_APP_NAME --json | jq -r '.Hostname')
+          
+          # Add a comment to the PR with the preview URL
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/comments \
+            -d "{\"body\": \"🚀 **Preview deployed!**\\n\\n**Preview URL**: https://$APP_URL\\n\\n**Endpoints:**\\n- Domain redirects: https://$APP_URL/\\n- Submit API: https://$APP_URL/submit\\n- Health check: https://$APP_URL/health\\n- Metrics: https://$APP_URL/metrics\\n- API docs: https://$APP_URL/docs\"}"
+
+  # Clean up preview apps when PR is closed
+  cleanup:
+    name: Cleanup preview app
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    steps:
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Destroy preview app
+        run: |
+          PR_APP_NAME="bounce-house-pr-${{ github.event.number }}"
+          flyctl apps destroy $PR_APP_NAME --yes || echo "App $PR_APP_NAME does not exist or already destroyed"
