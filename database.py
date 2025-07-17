@@ -6,8 +6,12 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 import datetime
 import uuid
 import os
+from dotenv import load_dotenv
 from typing import Dict, Any, Optional
 from models import FormInput
+
+# Load environment variables from .env file
+load_dotenv()
 
 Base = declarative_base()
 

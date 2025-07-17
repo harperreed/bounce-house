@@ -6,7 +6,13 @@ import requests
 import uvicorn
 from submit import app
 
-# Example environment variables you'll need to set:
+# Environment variables - create a .env file with:
+# RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
+# AIRTABLE_API_KEY=your_airtable_api_key
+# AIRTABLE_BASE_ID=your_airtable_base_id
+# AIRTABLE_TABLE_ID=your_airtable_table_id
+# 
+# Or set them as environment variables:
 # export RECAPTCHA_SECRET_KEY="your_recaptcha_secret_key"
 # export AIRTABLE_API_KEY="your_airtable_api_key"
 # export AIRTABLE_BASE_ID="your_airtable_base_id"

@@ -4,8 +4,12 @@
 import requests
 import os
 import time
+from dotenv import load_dotenv
 from typing import Optional
 from models import FormInput
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class AirtableClient:

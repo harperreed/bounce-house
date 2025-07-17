@@ -3,7 +3,11 @@
 
 import requests
 import os
+from dotenv import load_dotenv
 from typing import Optional
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class RecaptchaClient:

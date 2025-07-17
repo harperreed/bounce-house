@@ -6,7 +6,11 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 import os
+from dotenv import load_dotenv
 from typing import Optional
+
+# Load environment variables from .env file
+load_dotenv()
 
 from models import FormInput
 from database import Repository

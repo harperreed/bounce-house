@@ -17,6 +17,7 @@ dependencies = [
     "prometheus-client>=0.21.0",
     "pydantic>=2.11.7",
     "pytest>=8.3.3",
+    "python-dotenv>=1.1.1",
     "requests>=2.32.3",
     "sqlalchemy>=2.0.41",
     "tldextract>=5.1.3",
