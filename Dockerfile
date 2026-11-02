@@ -14,5 +14,5 @@ COPY . .
 # Expose port 8080 for the application
 EXPOSE 8080
 
-# Run the application using uv to execute gunicorn with the bounce:app WSGI application
-CMD ["uv","run", "gunicorn","bounce:app"]
+# Run the combined application using uv to execute uvicorn with the combined_app:app ASGI application
+CMD ["uv", "run", "uvicorn", "combined_app:app", "--host", "0.0.0.0", "--port", "8080"]
